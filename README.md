@@ -1,6 +1,10 @@
 # Hazey Gen v1
 This is a free twitch token gen skid = bad
 
+
+# How to use
+Put proxies in proxy.txt and 2captcha key in config, https://2captcha.com/enterpage
+
 # About
 
 ・Educational purpose only all your consequences caused by your actions is your responsibility
