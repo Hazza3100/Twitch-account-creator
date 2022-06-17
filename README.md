@@ -11,9 +11,6 @@ I decided to release this since there is a lot of fake "token gens" on youtube a
 
 Leave all Suggestions in a pull request or issue
 
-Join my discord
-https://discord.gg/phts
-
 It takes 2 seconds to star, takes me longer to maintain :)
 
 # Goals
@@ -30,3 +27,6 @@ It takes 2 seconds to star, takes me longer to maintain :)
 
 ・Custom Bio's
 
+# Support me
+Join my discord
+https://discord.gg/phts
