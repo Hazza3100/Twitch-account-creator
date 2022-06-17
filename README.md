@@ -32,3 +32,6 @@ Put proxies in proxies.txt and 2captcha key in config, https://2captcha.com/ente
 # Support me
 Join my discord
 https://discord.gg/phts
+
+
+# Skids
