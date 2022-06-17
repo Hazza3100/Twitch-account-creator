@@ -8,6 +8,8 @@ Leave all Suggestions in a pull request or issue
 Join my discord
 https://discord.gg/phts
 
+It takes 2 seconds to star, takes me longer to maintain :)
+
 # Goals
 
 ・ 10 Stars I will add some other nice stuff to it
