@@ -21,9 +21,9 @@ This is a free twitch token gen skid = bad
 
 # Goals
 
-・ 10 Stars I will add some other nice stuff to it
+・ 10 Stars It's decent :D
 
-・ 20  I will make faster
+・ 20 omg maybe some people actually seen it now
 
 # Support me
 Join my discord
