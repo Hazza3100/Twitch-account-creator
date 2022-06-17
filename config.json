@@ -1,5 +1,5 @@
 {
-    "2captcha_key": "", # can find here https://2captcha.com/enterpage
-    "bio_text": "Hazey Gen v1", # token bio
-    "threads": "2" # do I really have to explain?
+    "2captcha_key": "",
+    "bio_text": "Hazey Gen v1",
+    "threads": "2"
 }
