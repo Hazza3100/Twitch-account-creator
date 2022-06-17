@@ -10,6 +10,7 @@ This is a free twitch token gen skid = bad
 I decided to release this since there is a lot of fake "token gens" on youtube and it's not nice to see people lose there property over a download
 
 Leave all Suggestions in a pull request or issue
+
 Join my discord
 https://discord.gg/phts
 
