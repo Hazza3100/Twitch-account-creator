@@ -25,5 +25,5 @@ It takes 2 seconds to star, takes me longer to maintain :)
 
 ・Custom Usernames
 
-・Custom Bio
+・Custom Bio's
 
