@@ -9,7 +9,7 @@ This is a free twitch token gen skid = bad
 
 ・Leave all Suggestions in a pull request or issue
 
-・It takes 2 seconds to star, takes me longer to maintain :)
+・It takes 2 seconds to star, longer to maintain :)
 
 # Features
 
