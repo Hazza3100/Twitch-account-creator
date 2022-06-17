@@ -3,7 +3,9 @@ This is a free twitch token gen skid = bad
 
 # Rules
 
-・Educational purpose only all your consequences caused by your actions is your responsibility ・Selling this Free gen is forbidden, that is like selling tesco clubcards
+・Educational purpose only all your consequences caused by your actions is your responsibility
+
+・Selling this Free gen is forbidden, that is like selling tesco clubcards lmao
 
 I decided to release this since there is a lot of fake "token gens" on youtube and it's not nice to see people lose there property over a download
 
