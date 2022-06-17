@@ -23,7 +23,7 @@ This is a free twitch token gen skid = bad
 
 ・ 10 Stars It's decent :D
 
-・ 20 omg maybe some people actually seen it now
+・ 20  stars omg maybe some people actually seen it now
 
 # Support me
 Join my discord
