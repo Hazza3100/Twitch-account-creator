@@ -15,7 +15,6 @@ Put proxies in proxies.txt: https://www.webshare.io/?referral_code=27rjvonmaef4
 
 ## Features
 ```
-
 ・Twitch token Generator
 
 ・Custom Usernames
@@ -35,7 +34,7 @@ https://discord.gg/phts
 
 
 # Skids
-
+I will add all here, dm me with people
 
 
 ## 📄・License
