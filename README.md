@@ -48,3 +48,22 @@ This project is licensed under the GPL General Public License v3.0 License - see
   ・Selling this Free gen is forbidden
   ・If you make a copy of this/or fork it, it must be open-source and have credits linking to this repo
 ```
+
+
+## 💭・ChangeLog
+
+```diff
+v1 ⋮ 17/6/22
++ Stable Release
+
+v1.2 ⋮ 18/06/22
++ Fixed Json Decode Error
+
+```
+
+
+
+
+
+
+
