@@ -14,7 +14,7 @@ Put proxies in proxies.txt: https://www.webshare.io/?referral_code=27rjvonmaef4
 ・It takes 2 seconds to star, longer to maintain :)
 
 ```
-# Features
+## Features
 
 ・Twitch token Generator
 
