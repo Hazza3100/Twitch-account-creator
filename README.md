@@ -9,10 +9,6 @@ Put proxies in proxies.txt: https://www.webshare.io/?referral_code=27rjvonmaef4
 
 # About
 
-・Educational purpose only all your consequences caused by your actions is your responsibility
-
-・Selling this Free gen is forbidden, that is like selling tesco clubcards lmao
-
 ・Leave all Suggestions in a pull request or issue
 
 ・It takes 2 seconds to star, longer to maintain :)
