@@ -3,7 +3,9 @@ This is a free twitch token gen skid = bad
 
 
 # How to use
-Put proxies in proxies.txt and 2captcha key in config, https://2captcha.com/enterpage
+Put proxies in proxies.txt
+
+2captcha key in config, https://2captcha.com?from=13246017
 
 # About
 
