@@ -3,9 +3,9 @@ This is a free twitch token gen skid = bad
 
 
 # How to use
-Put proxies in proxies.txt
+Put proxies in proxies.txt: https://www.webshare.io/?referral_code=27rjvonmaef4
 
-2captcha key in config, https://2captcha.com?from=13246017
+2captcha key in config: https://2captcha.com?from=13246017
 
 # About
 
