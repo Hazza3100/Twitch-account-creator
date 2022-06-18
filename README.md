@@ -28,7 +28,7 @@ Put proxies in proxies.txt: https://www.webshare.io/?referral_code=27rjvonmaef4
 ・ 20  stars omg maybe some people actually seen it now
 
 # Support me
-Join my discord
+・Join my discord
 https://discord.gg/phts
 
 
