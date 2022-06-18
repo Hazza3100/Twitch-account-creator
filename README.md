@@ -2,18 +2,18 @@
 This is a free twitch token gen skid = bad
 
 
-# How to use
+# ・How to use
 Put proxies in proxies.txt: https://www.webshare.io/?referral_code=27rjvonmaef4
 
 2captcha key in config: https://2captcha.com?from=13246017
 
-# About
+# ・About
 
 ・Leave all Suggestions in a pull request or issue
 
 ・It takes 2 seconds to star, longer to maintain :)
 
-## Features
+## ・Features
 ```
 ・Twitch token Generator
 
@@ -22,7 +22,7 @@ Put proxies in proxies.txt: https://www.webshare.io/?referral_code=27rjvonmaef4
 ・Custom Bio's
 ```
 
- 🥅 ## Goals
+ ## 🥅 ・Goals
 
 ・ 10 Stars It's decent :D
 
@@ -33,7 +33,7 @@ Put proxies in proxies.txt: https://www.webshare.io/?referral_code=27rjvonmaef4
 https://discord.gg/phts
 
 
-## Skids
+## ・Skids
 I will add all here, dm me with people
 
 
