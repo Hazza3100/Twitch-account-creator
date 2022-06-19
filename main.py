@@ -25,6 +25,7 @@ with open('config.json') as f:
 capkey = cfg['2captcha_key']
 threads = cfg['threads']
 bio = cfg['bio_text']
+password = cfg['passwords']
 
 
 url = "https://www.twitch.tv/"
@@ -35,7 +36,13 @@ site_key = "E5554D43-23CC-1982-971D-6A2262A2CA24"
 def randomPass():
     return ("".join(random.SystemRandom().choice(string.ascii_lowercase + string.digits)for _ in range(12))) + ("".join(random.SystemRandom().choice(string.ascii_uppercase)))
 
-passwords = randomPass()
+if password == "": {
+    passwords == randomPass()
+}
+else: {
+    passwords == password
+}
+
 
 erorr_count = 0
 

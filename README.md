@@ -20,6 +20,8 @@ This is a free twitch token gen skid = bad
 ・Custom Usernames
 
 ・Custom Bio's
+
+・Custom Passwords
 ```
 
  ## 🥅 ・Goals
@@ -55,6 +57,9 @@ v1 ⋮ 17/6/22
 
 v1.2 ⋮ 18/06/22
 + Fixed Json Decode Error
+
+v1.3 ⋮ 19/06/22
++ Added password customization
 
 ```
 
