@@ -56,6 +56,10 @@ v1 ⋮ 17/6/22
 v1.2 ⋮ 18/06/22
 + Fixed Json Decode Error
 
+v2 ⋮ 08/08/22
++ Cleaned Up code
++ Got rid of useless methods
+
 ```
 
 
