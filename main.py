@@ -10,48 +10,28 @@ from colorama import Fore, init
 
 init(convert=True)
 
-readproxy = open('proxies.txt','r')
-readproxy2 = readproxy.readlines()
-workproxy = []
-for proxy3 in readproxy2:
-    proxystrip = proxy3.strip('\n')
-    workproxy.append(proxystrip)
+class Config():
+    with open('config.json') as f:
+        cfg = json.load(f)
+
+    capkey = cfg['2captcha_key']
+    bio = cfg['bio_text']
 
 
-
-with open('config.json') as f:
-    cfg = json.load(f)
-
-capkey = cfg['2captcha_key']
-threads = cfg['threads']
-bio = cfg['bio_text']
-
-
-url = "https://www.twitch.tv/"
-site_key = "E5554D43-23CC-1982-971D-6A2262A2CA24"
-
-
-
-def randomPass():
-    return ("".join(random.SystemRandom().choice(string.ascii_lowercase + string.digits)for _ in range(12))) + ("".join(random.SystemRandom().choice(string.ascii_uppercase)))
-
-passwords = randomPass()
-
-erorr_count = 0
+    url = "https://www.twitch.tv/"
+    site_key = "E5554D43-23CC-1982-971D-6A2262A2CA24"
 
 
 class Generator:
     def __init__(self):
-        self._token = None
-        self.session = requests.session
-        self.capkey = capkey
+        self.capkey = Config.capkey
         
         for _ in range(2):
             threading.Thread(target=self.get_captcha).start()
 
 
     def get_captcha(self):
-        getcap = requests.get(f"https://2captcha.com/in.php?key={self.capkey}&method=funcaptcha&publickey={site_key}&pageurl={url}")
+        getcap = requests.get(f"https://2captcha.com/in.php?key={self.capkey}&method=funcaptcha&publickey={Config.site_key}&pageurl={Config.url}")
 
         getcapid = getcap.text.split("|")[1]
         time.sleep(2.8)
@@ -70,14 +50,16 @@ class Generator:
         randommon = random.randint(1,12)
         email = "".join(random.choices(string.ascii_letters + string.digits, k=10)) + "@gmail.com"
         username = "".join(random.choices(string.ascii_letters + string.digits, k=10)) + "hazey"
+        password = "".join(random.choices(string.ascii_letters + string.digits, k=6)) + "H8_"
 
-        proxyb = random.choice(workproxy)
+        proxy = open('proxies.txt','r').read().splitlines()
+        proxyb = random.choice(proxy)
         proxies = {'http': f'http://{proxyb}','https':f'http://{proxyb}'}
         url = "https://passport.twitch.tv/register"
 
         json = {
             "username": username,
-            "password": passwords,
+            "password": password,
             "email": email,
             "birthday":{"day":randomday,"month":randommon,"year":2000},
             "client_id": "kimne78kx3ncx6brgo4mv6wki5h1ko",
@@ -111,13 +93,11 @@ class Generator:
             user_id = r.json()["userID"]
 
             headers = {"Connection": "keep-alive","Pragma": "no-cache","Cache-Control": "no-cache","sec-ch-ua": '"Google Chrome";v="95", "Chromium";v="95", ";Not A Brand";v="99"',"Accept-Language": "pl-PL","sec-ch-ua-mobile": "?0","Client-Version": "e8881750-cfb7-4ff7-aaae-132abb1e8259","Authorization": f"OAuth {token}","Content-Type": "text/plain;charset=UTF-8","User-agent": f'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.82 Safari/537.36',"Client-Session-Id": "671362f9f83b6729","Client-Id": "kimne78kx3ncx6brgo4mv6wki5h1ko","X-Device-Id": "O1MrFLwPyZ2byJzoLFT0K5XNlORNRQ9F","sec-ch-ua-platform": '"Windows"',"Accept": "*/*","Origin": "https://dashboard.twitch.tv","Sec-Fetch-Site": "same-site","Sec-Fetch-Mode": "cors","Sec-Fetch-Dest": "empty","Referer": "https://dashboard.twitch.tv/",}
-            json = [{"operationName": "UpdateUserProfile","variables": {"input": {"displayName": username,"description": bio,"userID": user_id,}},"extensions": {"persistedQuery": {"version": 1,"sha256Hash": "991718a69ef28e681c33f7e1b26cf4a33a2a100d0c7cf26fbff4e2c0a26d15f2",}},}]
+            json = [{"operationName": "UpdateUserProfile","variables": {"input": {"displayName": username,"description": Config.bio,"userID": user_id,}},"extensions": {"persistedQuery": {"version": 1,"sha256Hash": "991718a69ef28e681c33f7e1b26cf4a33a2a100d0c7cf26fbff4e2c0a26d15f2",}},}]
             r = requests.post("https://gql.twitch.tv/gql",headers=headers, json=json)
             
-            gfd = open('Out/tokens.txt','a+')
-            gfd.write(str(token) + str('\n'))
-            gfd2 = open('Out/accounts.txt','a+')
-            gfd2.write(f'{username}:{passwords}\n')
+            open('Out/tokens.txt','a').write(f'{token}\n')
+            open('Out/accounts.txt','a').write(f'{username}:{password}\n')
             print(Fore.GREEN + f"Generated | {Fore.RESET}{token}\n")
 
 
@@ -126,6 +106,7 @@ class Generator:
 
 def start():
     print("Hazey Gen v1\n")
+    threads = input("Enter amount of threads > ")
     time.sleep(1)
     print(f"Please Wait while 5-10 seconds for captchas to solve\n")
     for i in range(int(threads)):
