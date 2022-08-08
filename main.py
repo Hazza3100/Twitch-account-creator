@@ -1,14 +1,14 @@
-import requests
-import random
-import string
-import time
-import threading
 import json
+import time
+import string
+import random
+import requests
+import threading
 
 from colorama import Fore, init
 
-
 init(convert=True)
+
 
 class Config():
     with open('config.json') as f:
