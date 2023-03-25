@@ -9,11 +9,11 @@ This is a twitch account/token creator
 
 ## ・Features
 ```
-・Twitch token Generator
+・Twitch account/token creator
 
 ・Realistic usernames
 
-・More when the goals are reached!
+・More features when the goals below are reached!
 ```
 
  ## 🥅 ・Goals
