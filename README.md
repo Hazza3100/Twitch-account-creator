@@ -47,21 +47,14 @@ This project is licensed under the GPL General Public License v3.0 License - see
 ## 💭・ChangeLog
 
 ```diff
-v1 ⋮ 17/6/22
+v1 ⋮ 25/03/2023
 + Stable Release
 
-v1.2 ⋮ 18/06/22
-+ Fixed Json Decode Error
-
-v2 ⋮ 08/08/22
-+ Cleaned Up code
-+ Got rid of useless methods
 
 ```
 
 
-
-This is demonstrating that twitch have no security, educational use only!
+This was made for educational use only. If this is causing a issue/problem towards anyone involved please make a issue to get this public repository removed.
 
 
 
