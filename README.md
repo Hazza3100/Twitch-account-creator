@@ -26,9 +26,10 @@ This is a twitch account/token creator
 
  ## 🥅 ・Goals
 
-・ 10 Stars It's decent :D
-
-・ 20  stars omg maybe some people actually seen it now
+・ 60 Stars for update
+・ 70 for bio
+・80 for pfp
+・90 for banner
 
 ## Support me
 ・Join my discord
