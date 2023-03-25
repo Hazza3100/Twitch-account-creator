@@ -3,9 +3,10 @@ This is a twitch account/token creator
 
 60 stars = update
 
+![Screenshot](previewGen.png)
 
 # ・How to use
-・Put proxies in proxies.txt: https://www.webshare.io/?referral_code=27rjvonmaef4
+・Get proxies from [(https://www.webshare.io/?referral_code=27rjvonmaef4)]
 
 ・2captcha key in config: https://2captcha.com?from=13246017
 
