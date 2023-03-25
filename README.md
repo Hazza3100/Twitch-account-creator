@@ -30,7 +30,7 @@ This is a twitch account/token creator
 
 ・ 90 stars for banner
 
-## Support me
+## Need help?
 ・Join my discord
 https://discord.gg/phts
 
