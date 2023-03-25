@@ -8,19 +8,14 @@ This is a twitch account/token creator
 
 ・Get captcha api key [here](https://dashboard.capsolver.com/passport/register?inviteCode=rwXDPRNK)
 
-# ・About
-
-・Leave all Suggestions in a pull request or issue
-
-・It takes 2 seconds to star, longer to maintain :)
 
 ## ・Features
 ```
 ・Twitch token Generator
 
-・Custom Usernames
+・Realistic usernames
 
-・Custom Bio's
+・More when the goals are reached!
 ```
 
  ## 🥅 ・Goals
@@ -38,11 +33,6 @@ This is a twitch account/token creator
 ## Support me
 ・Join my discord
 https://discord.gg/phts
-
-
-## ・Skids
-I will add all here, dm me with people
-
 
 ## 📄・License
 
