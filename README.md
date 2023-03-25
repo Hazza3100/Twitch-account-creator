@@ -1,14 +1,12 @@
 # Twitch Account creator
 This is a twitch account/token creator
 
-60 stars = update
-
 ![Screenshot](previewGen.png)
 
 # ・How to use
 ・Get proxies from [Here](https://www.webshare.io/?referral_code=27rjvonmaef4), export as user:password authentication then use this [tool](https://github.com/Hazza3100/Webshare-Formatter) to format them. After this put them in data/proxies.txt
 
-・2captcha key in config: https://2captcha.com?from=13246017
+・Get captcha api key [here](https://dashboard.capsolver.com/passport/register?inviteCode=rwXDPRNK)
 
 # ・About
 
