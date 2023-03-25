@@ -1,115 +1,180 @@
-import json
+import os
+import re
 import time
-import string
 import random
+import string
 import requests
 import threading
 
-from colorama import Fore, init
-
-init(convert=True)
-
-
-class Config():
-    with open('config.json') as f:
-        cfg = json.load(f)
-
-    capkey = cfg['2captcha_key']
-    bio = cfg['bio_text']
+from os.path            import isfile, join
+from colorama           import Fore
 
 
-    url = "https://www.twitch.tv/"
-    site_key = "E5554D43-23CC-1982-971D-6A2262A2CA24"
 
+def checkFormat():
+    pattern = r'^(?:(?P<user>[^:@]+):(?P<pass>[^:@]+)@)?(?P<host>[^:]+):(?P<port>\d+)$'
+    proxies = open('data/proxies.txt', 'r').read().splitlines()
+    for proxy in proxies:
+        match = re.match(pattern, proxy)
+        if match:
+            return True
+        else:
+            return False
 
-class Generator:
-    def __init__(self):
-        self.capkey = Config.capkey
-        
-        for _ in range(2):
-            threading.Thread(target=self.get_captcha).start()
+class captchaio:
+    def __init__(self, apikey: str) -> None:
+        self.session = requests.Session()
+        self.apikey  = apikey
+        self.headers = {'Host': 'api.capsolver.com', 'Content-Type': 'application/json'}
 
-
-    def get_captcha(self):
-        getcap = requests.get(f"https://2captcha.com/in.php?key={self.capkey}&method=funcaptcha&publickey={Config.site_key}&pageurl={Config.url}")
-
-        getcapid = getcap.text.split("|")[1]
-        time.sleep(2.8)
-        capansw = requests.get(f"https://2captcha.com/res.php?key={self.capkey}&action=get&id={getcapid}")
-
-        while "CAPCHA_NOT_READY" in capansw.text:
-            time.sleep(1.6)
-            capansw = requests.get(f"https://2captcha.com/res.php?key={self.capkey}&action=get&id={getcapid}")
-
-        self.GenerateToken(capansw.text[3:])
-
-
-    def GenerateToken(self, captcha_token):
-
-        randomday = random.randint(1,30)
-        randommon = random.randint(1,12)
-        email = "".join(random.choices(string.ascii_letters + string.digits, k=10)) + "@gmail.com"
-        username = "".join(random.choices(string.ascii_letters + string.digits, k=10)) + "hazey"
-        password = "".join(random.choices(string.ascii_letters + string.digits, k=6)) + "H8_"
-
-        proxy = open('proxies.txt','r').read().splitlines()
-        proxyb = random.choice(proxy)
-        proxies = {'http': f'http://{proxyb}','https':f'http://{proxyb}'}
-        url = "https://passport.twitch.tv/register"
-
-        json = {
-            "username": username,
-            "password": password,
-            "email": email,
-            "birthday":{"day":randomday,"month":randommon,"year":2000},
-            "client_id": "kimne78kx3ncx6brgo4mv6wki5h1ko",
-            "arkose":{"token":captcha_token}
+    def createTask(self, proxy: str) -> str:
+        try:
+            username, _, host      = proxy.partition(':')
+            password, _, host_port = host.partition('@')
+            hostname, _, port      = host_port.partition(':')
+            json = {
+                "clientKey": self.apikey,
+                "task": {
+                    "cd"           : True,
+                    "pageURL"      : "https://passport.twitch.tv/integrity",
+                    "proxyType"    : "http",
+                    "proxyAddress" : hostname,
+                    "proxyPort"    : int(port),
+                    "proxyLogin"   : username,
+                    "proxyPassword": password,
+                    "userAgent"    : "Dalvik/2.1.0 (Linux; U; Android 7.1.2; SM-G965N Build/QP1A.190711.020) tv.twitch.android.app/14.3.2/1403020",
+                }
             }
+            while True:
+                r = self.session.post('https://api.capsolver.com/kasada/invoke', json=json, headers=self.headers)
+                if "Proxy Ban" in r.text:
+                    return False
+                if r.json()['success'] == True:
+                    x_kpsdk_ct = r.json()['solution']['x-kpsdk-ct']
+                    x_kpsdk_cd = r.json()['solution']['x-kpsdk-cd']
+                    return (x_kpsdk_cd, x_kpsdk_ct)
+                else:
+                    print(f"{Fore.BLUE}[ {Fore.RED}x {Fore.BLUE}]{Fore.RESET} Kasada Solve Error")
+                    return False
+        except:
+            pass
 
-        headers = {
-            "host": "passport.twitch.tv",
-            "connection": "keep-alive",
-            "user-agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/102.0.5005.61 Safari/537.36",
-            "content-type": "text/plain;charset=UTF-8",
-            "accept": "*/*",
-            "origin": "https://www.twitch.tv",
-            "sec-fetch-site": "same-site",
-            "sec-fetch-mode": "cors",
-            "sec-fetch-dest": "empty",
-            "referer": "https://www.twitch.tv/",
-            "accept-encoding": "gzip, deflate, br",
-            "accept-language": "en-US,en;q=0.9",
-            }
-        r = requests.post(url, json=json, headers=headers, proxies=proxies)
-
-        if "You are trying to sign up for accounts too fast." in r.text:
-            print(Fore.LIGHTRED_EX + 'You Are Being Rate Limited')
-
-        elif "Please complete the CAPTCHA correctly." in r.text:
-            print(Fore.LIGHTRED_EX + 'Captcha Solved Incorrectly')
-
-        elif "access_token" in r.text:
-            token = r.json()["access_token"]
-            user_id = r.json()["userID"]
-
-            headers = {"Connection": "keep-alive","Pragma": "no-cache","Cache-Control": "no-cache","sec-ch-ua": '"Google Chrome";v="95", "Chromium";v="95", ";Not A Brand";v="99"',"Accept-Language": "pl-PL","sec-ch-ua-mobile": "?0","Client-Version": "e8881750-cfb7-4ff7-aaae-132abb1e8259","Authorization": f"OAuth {token}","Content-Type": "text/plain;charset=UTF-8","User-agent": f'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/98.0.4758.82 Safari/537.36',"Client-Session-Id": "671362f9f83b6729","Client-Id": "kimne78kx3ncx6brgo4mv6wki5h1ko","X-Device-Id": "O1MrFLwPyZ2byJzoLFT0K5XNlORNRQ9F","sec-ch-ua-platform": '"Windows"',"Accept": "*/*","Origin": "https://dashboard.twitch.tv","Sec-Fetch-Site": "same-site","Sec-Fetch-Mode": "cors","Sec-Fetch-Dest": "empty","Referer": "https://dashboard.twitch.tv/",}
-            json = [{"operationName": "UpdateUserProfile","variables": {"input": {"displayName": username,"description": Config.bio,"userID": user_id,}},"extensions": {"persistedQuery": {"version": 1,"sha256Hash": "991718a69ef28e681c33f7e1b26cf4a33a2a100d0c7cf26fbff4e2c0a26d15f2",}},}]
-            r = requests.post("https://gql.twitch.tv/gql",headers=headers, json=json)
-            
-            open('Out/tokens.txt','a').write(f'{token}\n')
-            open('Out/accounts.txt','a').write(f'{username}:{password}\n')
-            print(Fore.GREEN + f"Generated | {Fore.RESET}{token}\n")
+def get_token(proxy: str, apikey) -> str:
+    try:
+        with requests.Session() as session:
+            kas = captchaio(apikey).createTask(proxy)
+            if kas == False:
+                print(f"{Fore.BLUE}[ {Fore.RED}x {Fore.BLUE}]{Fore.RESET} Kasada Solve Error")
+            else:
+                cd  = kas[0]
+                ct  = kas[1]
+                headers = {
+                    "accept"           : "application/vnd.twitchtv.v3+json",
+                    "accept-encoding"  : "gzip",
+                    "accept-language"  : "en-us",
+                    "api-consumer-type": "mobile; Android/1403020",
+                    "client-id"        : "kd1unb4b3q4t58fwlpcbzcbnm76a8fp",
+                    "connection"       : "Keep-Alive",
+                    "content-length"   : "0",
+                    "host"             : "passport.twitch.tv",
+                    "user-agent"       : "Dalvik/2.1.0 (Linux; U; Android 7.1.2; SM-G965N Build/QP1A.190711.020) tv.twitch.android.app/14.3.2/1403020",
+                    "x-app-version"    : "14.3.2",
+                    "x-kpsdk-cd"       : cd,
+                    "x-kpsdk-ct"       : ct,
+                    "x-kpsdk-v"        : "a-1.6.0"
+                    }
+                r = session.post('https://passport.twitch.tv/integrity', headers=headers, proxies={'http': f'http://{proxy}', 'https': f'http://{proxy}'})
+                if "token" in r.text:
+                    return r.json()['token']
+                else:
+                    return False
+    except:
+        pass
 
 
 
+created = 0
 
 
-def start():
-    print("Hazey Gen v1\n")
-    threads = input("Enter amount of threads > ")
-    time.sleep(1)
-    print(f"Please Wait while 5-10 seconds for captchas to solve\n")
-    for i in range(int(threads)):
-        threading.Thread(target=Generator).start()
-    
-start()
+def get_username():
+    try:
+        with requests.Session() as session:
+            username = session.get('https://names.drycodes.com/10').json()[0]
+            headers = {'Accept': '*/*','Accept-Language': 'en-GB','Client-Id': 'kimne78kx3ncx6brgo4mv6wki5h1ko','Connection': 'keep-alive','Content-Type': 'text/plain;charset=UTF-8','Origin': 'https://www.twitch.tv','Referer': 'https://www.twitch.tv/','Sec-Fetch-Dest': 'empty','Sec-Fetch-Mode': 'cors','Sec-Fetch-Site': 'same-site','User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/105.0.0.0 Safari/537.36','sec-ch-ua': '".Not/A)Brand";v="99", "Google Chrome";v="103", "Chromium";v="103"','sec-ch-ua-mobile': '?0','sec-ch-ua-platform': '"Windows"',}
+            data = '[{"operationName":"UsernameValidator_User","variables":{"username":"'+username+'"},"extensions":{"persistedQuery":{"version":1,"sha256Hash":"fd1085cf8350e309b725cf8ca91cd90cac03909a3edeeedbd0872ac912f3d660"}}}]'
+            r = session.post('https://gql.twitch.tv/gql', data=data, headers=headers).json()[0]["data"]["isUsernameAvailable"]
+            if r == True:
+                return username
+            else:
+                return username + ''.join(random.choices('poiuytrewqlkjhgfdsaamnbvcxz', k=3))
+    except:
+        pass
+
+
+def Gen(apikey: str):
+    try:
+        with requests.Session() as session:
+            global created
+            email    = ''.join(random.choices('poiuytrewqlkjhgfdsamnbvcxz0987654321', k=10)) + "@gmail.com"
+            username = get_username()
+            password = ''.join(random.choices('poiuytrewqlkjhgfdsamnbvcxz0987654321', k=12))
+            proxy = random.choice(open('data/proxies.txt', 'r').read().splitlines())
+            proxies = {'http': f'http://{proxy}', 'https': f'http://{proxy}'}
+            integrity = get_token(proxy, apikey)
+            if integrity is None or integrity == False:
+                print(f"{Fore.BLUE}[ {Fore.RED}x {Fore.BLUE}]{Fore.RESET} Failed to Fetch Integrity")
+                pass
+            else:
+                headers = {
+                    "accept"           : "application/vnd.twitchtv.v3+json",
+                    "accept-encoding"  : "gzip",
+                    "accept-language"  : "en-us",
+                    "api-consumer-type": "mobile; Android/1403020",
+                    "client-id"        : "kd1unb4b3q4t58fwlpcbzcbnm76a8fp",
+                    "connection"       : "Keep-Alive",
+                    "content-length"   : "251",
+                    "content-type"     : "application/json; charset=UTF-8",
+                    "host"             : "passport.twitch.tv",
+                    "user-agent"       : "Dalvik/2.1.0 (Linux; U; Android 7.1.2; SM-G965N Build/QP1A.190711.020) tv.twitch.android.app/14.3.2/1403020",
+                    "x-app-version"    : "14.3.2",
+                    "x-device-id"      : ''.join(random.choices(string.ascii_letters + string.digits, k=32))
+                }
+                json = {
+                    "birthday": {
+                        "day"  : random.randint(1,28),
+                        "month": random.randint(1,12),
+                        "year" : random.randint(1970,2005)
+                    },
+                    "client_id"                : "kd1unb4b3q4t58fwlpcbzcbnm76a8fp",
+                    "email"                    : email,
+                    "include_verification_code": True,
+                    "integrity_token"          : integrity,
+                    "password"                 : password,
+                    "username"                 : username
+                }
+                r = session.post('https://passport.twitch.tv/protected_register', json=json, headers=headers, proxies=proxies)
+                if r.json()['redirect_path'] == 'https://www.twitch.tv/':
+                    created += 1
+                    token  = r.json()['access_token']
+                    userId = r.json()['userID'] 
+                    with open('Results/tokens.txt', 'a') as f:
+                        f.write(f"{token}\n")
+                    with open('Results/accounts.txt', 'a') as f:
+                        f.write(f"{email}:{username}:{password}:{token}\n")
+                    print(f"{Fore.BLUE}[ {Fore.GREEN}+ {Fore.BLUE}]{Fore.RESET} Generated  {token[0:25]}***** ({created})")
+
+                else:
+                    print(f"{Fore.BLUE}[ {Fore.RED}x {Fore.BLUE}]{Fore.RESET} Error")
+    except Exception as e:
+        print(e)
+
+
+os.system('cls')
+x = checkFormat()
+if x == False:
+    print(f"{Fore.BLUE}[ {Fore.RED}x {Fore.BLUE}]{Fore.RESET} Invalid Proxy Format")
+else:
+    threads = int(input(f"{Fore.BLUE}[ {Fore.YELLOW}> {Fore.BLUE}]{Fore.RESET} Threads: "))
+    apikey  = input(f"{Fore.BLUE}[ {Fore.YELLOW}> {Fore.BLUE}]{Fore.RESET} Api key: ")
+    for i in range(threads):
+        threading.Thread(target=Gen, args=(apikey,)).start()
