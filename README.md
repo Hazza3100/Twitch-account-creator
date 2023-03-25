@@ -27,9 +27,10 @@ This is a twitch account/token creator
  ## 🥅 ・Goals
 
 ・ 60 Stars for update
-・ 70 for bio
-・80 for pfp
-・90 for banner
+・ 70 stars for bio
+・ 75 stars for email verify
+・ 80 stars for pfp
+・ 90 stars for banner
 
 ## Support me
 ・Join my discord
