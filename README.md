@@ -1,5 +1,7 @@
-# Hazey Gen v1
-This is a free twitch token gen skid = bad
+# Twitch Account creator
+This is a twitch account/token creator
+
+60 stars = update
 
 
 # ・How to use
