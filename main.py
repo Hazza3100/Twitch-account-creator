@@ -1,6 +1,5 @@
 import os
 import re
-import time
 import random
 import string
 import requests
@@ -110,6 +109,33 @@ def get_username():
     except:
         pass
 
+def changeBio(token: str, userId: str) -> None:
+    try:
+        with requests.Session() as session:
+            quote = session.get('https://api.quotable.io/random').json()['content']
+            headers = {"accept": "application/vnd.twitchtv.v3+json","accept-encoding": "gzip","accept-language": "en-us","api-consumer-type": "mobile; Android/1403020","authorization": f"OAuth {token}","client-id": "kd1unb4b3q4t58fwlpcbzcbnm76a8fp","connection": "Keep-Alive","content-type": "application/json","host": "gql.twitch.tv","user-agent": "Dalvik/2.1.0 (Linux; U; Android 7.1.2; SM-G965N Build/QP1A.190711.020) tv.twitch.android.app/14.3.2/1403020","x-apollo-operation-id": "14396482e090e2bfc15a168f4853df5ccfefaa5b51278545d2a1a81ec9795aae","x-apollo-operation-name": "UpdateUserDescriptionMutation","x-app-version": "14.3.2",}
+            json = [
+            {
+                "operationName": "UpdateUserDescriptionMutation",
+                "variables": {
+                "userID": userId,
+                "newDescription": quote
+                },
+                "extensions": {
+                "persistedQuery": {
+                    "version": 1,
+                    "sha256Hash": "14396482e090e2bfc15a168f4853df5ccfefaa5b51278545d2a1a81ec9795aae"
+                }
+                }
+            }
+            ]
+            response = session.post('https://gql.twitch.tv/gql', json=json, headers=headers)
+            if response.json()[0]['data']['updateUser']['error'] is None:
+                print(f"{Fore.BLUE}[ {Fore.GREEN}+ {Fore.BLUE}]{Fore.RESET} Updated Bio  {token[0:25]}*****")
+            else:
+                print(f"{Fore.BLUE}[ {Fore.RED}x {Fore.BLUE}]{Fore.RESET} Failed to Change Bio {token[0:25]}*****")
+    except:
+        pass
 
 def Gen(apikey: str):
     try:
@@ -156,13 +182,13 @@ def Gen(apikey: str):
                 if r.json()['redirect_path'] == 'https://www.twitch.tv/':
                     created += 1
                     token  = r.json()['access_token']
-                    userId = r.json()['userID'] 
+                    userID = r.json()['userID'] 
                     with open('Results/tokens.txt', 'a') as f:
                         f.write(f"{token}\n")
                     with open('Results/accounts.txt', 'a') as f:
                         f.write(f"{email}:{username}:{password}:{token}\n")
                     print(f"{Fore.BLUE}[ {Fore.GREEN}+ {Fore.BLUE}]{Fore.RESET} Generated  {token[0:25]}***** ({created})")
-
+                    changeBio(token, userID)
                 else:
                     print(f"{Fore.BLUE}[ {Fore.RED}x {Fore.BLUE}]{Fore.RESET} Error")
     except Exception as e:
