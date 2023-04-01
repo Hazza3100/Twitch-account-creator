@@ -18,7 +18,7 @@ This is a twitch account/token creator
 
  ## 🥅 ・Goals
 
-・ 70 stars for bio
+・ 70 stars for bio ✅
 
 ・ 75 stars for email verify
 
