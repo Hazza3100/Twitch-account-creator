@@ -13,6 +13,8 @@ This is a twitch account/token creator
 
 ・Realistic usernames
 
+・Realistic Bio
+
 ・More features when the goals below are reached!
 ```
 
