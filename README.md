@@ -22,7 +22,7 @@ This is a twitch account/token creator
 
 ・ 70 stars for bio ✅
 
-・ 75 stars for email verify
+・ 75 stars for email verify [Will add soon]
 
 ・ 80 stars for pfp
 
