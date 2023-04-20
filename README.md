@@ -55,7 +55,6 @@ This project is licensed under the GPL General Public License v3.0 License - see
   ・If you make a copy of this/or fork it, it must be open-source and have credits linking to this repo
 ```
 
-
 This was made for educational use only. If this is causing a issue/problem towards anyone involved please make a issue to get this public repository removed.
 
 
