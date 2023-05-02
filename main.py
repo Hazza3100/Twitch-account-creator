@@ -3,6 +3,7 @@ import re
 import time
 import random
 import string
+import webbrowser
 import requests
 import threading
 
@@ -10,8 +11,13 @@ from os        import system
 from os.path   import isfile, join
 from colorama  import Fore
 
+current = 3.1
+active = requests.get('https://raw.githubusercontent.com/Hazza3100/Twitch-account-creator/main/version.json').json()['version']
+if current != active:
+    print(f"{Fore.BLUE}[ {Fore.RED}x {Fore.BLUE}]{Fore.RESET} Outdated! Please download the latest version from https://github.com/Hazza3100/Twitch-account-creator")
+    webbrowser.open('https://github.com/Hazza3100/Twitch-account-creator')
 
-
+    
 class stats:
     created = 0
     errors  = 0 
