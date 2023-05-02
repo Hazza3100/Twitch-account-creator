@@ -22,9 +22,9 @@ This is a twitch account/token creator
 
 ・ 70 stars for bio ✅
 
-・ 75 stars for email verify [Will add soon]
+・ 75 stars for email verify [Open a issue if you know a good free/public one and I will add it]
 
-・ 80 stars for pfp
+・ 80 stars for pfp ✅
 
 ・ 90 stars for banner
 
@@ -43,7 +43,10 @@ v1 ⋮ 25/03/2023
 
 v1.01 ⋮ 01/04/2023
 + Realistic Bio's
-+ Code Cleanup
+
+v1.02 ⋮ 02/05/2023
++ Profile Image
++ Prep for email verify
 ```
 
 ## 📄・License
