@@ -1,4 +1,6 @@
+import os
 import re
+import time
 import random
 import string
 import requests
@@ -52,7 +54,45 @@ class captchaio:
         except:
             pass
 
+class MailGW:
+    def __init__(self):
+        self.base_url = 'https://api.mail.gw'
+        self.domain   = self.get_domain() 
 
+    def get_domain(self):
+        return requests.get(self.base_url + '/domains').json()['hydra:member'][0]['domain']
+
+    def get_email(self):
+        try:
+            json = {
+                'address' : f"{''.join(random.choices('poiuytrewqlkjhgfdsamnbvcxzPOIUYTREWQMNBVCXZLKJHGFDSA0987654321', k=12))}@{self.domain}",
+                'password': ''.join(random.choices('poiuytrewqlkjhgfdsamnbvcxzPOIUYTREWQMNBVCXZLKJHGFDSA0987654321', k=14))
+            }
+            x = requests.post(self.base_url + '/accounts', json=json).json()
+            return (x['id'], x['address'], json['password'])
+        except:
+            return False
+    
+    def get_token(self, email, password):
+        try:
+            json = {
+                'address' : email,
+                'password': password
+            }
+            return requests.post(self.base_url + '/token', json=json).json()['token']
+        except:
+            return False
+    
+    def get_messages(self, token):
+        try:
+            while True:
+                time.sleep(2)
+                x = requests.get(self.base_url + f'/messages', headers={'Authorization': f'Bearer {token}'})
+                if 'subject' in x.text:
+                    subject = x.json()['hydra:member'][0]['subject']
+                    return subject[:6]
+        except:
+            return False
 
 class twitch:
     def __init__(self) -> None:
@@ -169,16 +209,88 @@ class twitch:
                 ]
                 response = self.session.post('https://gql.twitch.tv/gql', json=json, headers=headers).json()[0]['data']['updateUser']['error']
                 if response is None:
-                    print(f"{Fore.BLUE}[ {Fore.GREEN}+ {Fore.BLUE}]{Fore.RESET} Updated Bio  {token[0:25]}*****")
+                    print(f"{Fore.BLUE}[ {Fore.GREEN}+ {Fore.BLUE}]{Fore.RESET} Updated Bio {token[0:25]}*****")
                 else:
                     print(f"{Fore.BLUE}[ {Fore.RED}x {Fore.BLUE}]{Fore.RESET} Failed to Change Bio {token[0:25]}*****")
         except:
             pass
 
+    def createUpload(self, token: str, userID: str) -> str:
+        try:
+            with self.session as session:
+                headers = {"accept": "application/vnd.twitchtv.v3+json","accept-encoding": "gzip","accept-language": "en-us","api-consumer-type": "mobile; Android/1403020","authorization": f"OAuth {token}","client-id": "kd1unb4b3q4t58fwlpcbzcbnm76a8fp","connection": "Keep-Alive","content-type": "application/json","host": "gql.twitch.tv","user-agent": "Dalvik/2.1.0 (Linux; U; Android 7.1.2; SM-G965N Build/QP1A.190711.020) tv.twitch.android.app/14.3.2/1403020","x-apollo-operation-id": "4de617743abe2fedc733c0be56f435fc2ecb6f06d34ab1d0a44e9350a232190b","x-apollo-operation-name": "CreateProfileImageUploadURL","x-app-version": "14.3.2",}
+                json = [
+                {
+                    "operationName": "CreateProfileImageUploadURL",
+                    "variables": {
+                    "input": {
+                        "format": "PNG",
+                        "userID": userID
+                    }
+                    },
+                    "extensions": {
+                    "persistedQuery": {
+                        "version": 1,
+                        "sha256Hash": "4de617743abe2fedc733c0be56f435fc2ecb6f06d34ab1d0a44e9350a232190b"
+                    }
+                    }
+                }
+                ]
+                return session.post('https://gql.twitch.tv/gql', json=json, headers=headers).json()[0]['data']['createProfileImageUploadURL']['uploadURL']
+        except:
+            pass
+
+    def sendUpload(self, token: str, userId: str) -> None:
+        try:
+            with self.session as session:
+                headers  = {"accept": "application/vnd.twitchtv.v3+json","accept-encoding": "gzip","accept-language": "en-us","api-consumer-type": "mobile; Android/1403020","client-id": "kd1unb4b3q4t58fwlpcbzcbnm76a8fp","connection": "Keep-Alive","content-length": "1777","content-type": "application/octet-stream","host": "twitchuploadservice-infra-prod-us-ingest4069586c-608wwzuuil7q.s3-accelerate.amazonaws.com","user-agent": "Dalvik/2.1.0 (Linux; U; Android 7.1.2; SM-G965N Build/QP1A.190711.020) tv.twitch.android.app/14.3.2/1403020","x-app-version": "14.3.2",}
+                rand_pic = random.choice([f for f in os.listdir("data/avatars/") if isfile(join("data/avatars/", f))])
+                data     = open(f'data/avatars/{rand_pic}', 'rb')
+                session.put(self.createUpload(token, userId), data=data, headers=headers)
+                print(f"{Fore.BLUE}[ {Fore.GREEN}+ {Fore.BLUE}]{Fore.RESET} Updated Profile Image {token[0:25]}*****")
+        except Exception as e:
+            pass
+
+    def verify(self, email, token, userId, code):
+        try:
+            deviceId = ''.join(random.choices(string.ascii_letters + string.digits, k=32))
+            headers = {"accept": "application/vnd.twitchtv.v3+json","accept-encoding": "gzip","accept-language": "en-us","api-consumer-type": "mobile; Android/1403020","authorization": f"OAuth {token}","client-id": "kd1unb4b3q4t58fwlpcbzcbnm76a8fp","connection": "Keep-Alive","content-type": "application/json","host": "gql.twitch.tv","user-agent": "Dalvik/2.1.0 (Linux; U; Android 7.1.2; SM-G965N Build/QP1A.190711.020) tv.twitch.android.app/14.3.2/1403020","x-apollo-operation-id": "72babafce68ab9862b6e4067385397b5d70caf4c2b45566970f57e5184411649","x-apollo-operation-name": "ValidateVerificationCode","x-app-version": "14.3.2","x-device-id": deviceId}
+            json = [
+            {
+                "operationName": "ValidateVerificationCode",
+                "variables": {
+                "input": {
+                    "address": email,
+                    "code"   : code,
+                    "key"    : userId
+                }
+                },
+                "extensions": {
+                "persistedQuery": {
+                    "version": 1,
+                    "sha256Hash": "72babafce68ab9862b6e4067385397b5d70caf4c2b45566970f57e5184411649"
+                }
+                }
+            }
+            ]
+            response = requests.post('https://gql.twitch.tv/gql', json=json, headers=headers)
+            if response.json()[0]['data']['validateVerificationCode']['request']['status'] == 'VERIFIED':
+                print(f"{Fore.BLUE}[ {Fore.GREEN}+ {Fore.BLUE}]{Fore.RESET} Email Verified {token[0:25]}*****")
+            else:
+                print(f"{Fore.BLUE}[ {Fore.RED}x {Fore.BLUE}]{Fore.RESET} Failed to verify email")
+        except:
+            print(f"{Fore.BLUE}[ {Fore.RED}x {Fore.BLUE}]{Fore.RESET} Failed to verify email [-1]")
+
     def Gen(self, apikey: str) -> None:
         try:
             with self.session as session:
-                username, password, email, proxy = self.get_data()
+                username, password, emaill, proxy = self.get_data()
+                id, email, epassword = MailGW().get_email()
+                if not email:
+                    email = emaill
+                    etoken = False
+                else:
+                    etoken = MailGW().get_token(email, epassword)
                 integrity = self.get_token(proxy, apikey)
                 if integrity is None or integrity == False:
                     print(f"{Fore.BLUE}[ {Fore.RED}x {Fore.BLUE}]{Fore.RESET} Failed to Fetch Integrity")
@@ -216,12 +328,16 @@ class twitch:
                         stats.created += 1
                         token  = r.json()['access_token']
                         userID = r.json()['userID'] 
-                        with open('Results/tokens.txt', 'a') as f:
+                        with open('data/Results/tokens.txt', 'a') as f:
                             f.write(f"{token}\n")
-                        with open('Results/accounts.txt', 'a') as f:
+                        with open('data/Results/accounts.txt', 'a') as f:
                             f.write(f"{email}:{username}:{password}:{token}\n")
-                        print(f"{Fore.BLUE}[ {Fore.GREEN}+ {Fore.BLUE}]{Fore.RESET} Generated  {token[0:25]}***** ({stats.created})")
+                        print(f"{Fore.BLUE}[ {Fore.GREEN}+ {Fore.BLUE}]{Fore.RESET} Generated {token[0:25]}***** ({stats.created})")
                         self.changeBio(token, userID)
+                        self.sendUpload(token, userID)
+                        if etoken != False:
+                            code = MailGW().get_messages(etoken)
+                        self.verify(email, token, userID, code)
                     else:
                         print(f"{Fore.BLUE}[ {Fore.RED}x {Fore.BLUE}]{Fore.RESET} Error")
         except Exception as e:
