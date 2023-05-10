@@ -11,7 +11,7 @@ from os        import system
 from os.path   import isfile, join
 from colorama  import Fore
 
-current = 3.1
+current = 3.2
 active = requests.get('https://raw.githubusercontent.com/Hazza3100/Twitch-account-creator/main/version.json').json()['version']
 if current != active:
     print(f"{Fore.BLUE}[ {Fore.RED}x {Fore.BLUE}]{Fore.RESET} Outdated! Please download the latest version from https://github.com/Hazza3100/Twitch-account-creator")
@@ -60,6 +60,7 @@ class captchaio:
         except:
             pass
 
+
 class MailGW:
     def __init__(self):
         self.base_url = 'https://api.mail.gw'
@@ -77,7 +78,7 @@ class MailGW:
             x = requests.post(self.base_url + '/accounts', json=json).json()
             return (x['id'], x['address'], json['password'])
         except:
-            return False
+            return ('None', 'None', 'None')
     
     def get_token(self, email, password):
         try:
@@ -99,7 +100,7 @@ class MailGW:
                     return subject[:6]
         except:
             return False
-
+MailGw = MailGW()
 class twitch:
     def __init__(self) -> None:
         self.session = requests.Session()
@@ -291,12 +292,12 @@ class twitch:
         try:
             with self.session as session:
                 username, password, emaill, proxy = self.get_data()
-                id, email, epassword = MailGW().get_email()
+                id, email, epassword = MailGw.get_email()
                 if not email:
                     email = emaill
                     etoken = False
                 else:
-                    etoken = MailGW().get_token(email, epassword)
+                    etoken = MailGw.get_token(email, epassword)
                 integrity = self.get_token(proxy, apikey)
                 if integrity is None or integrity == False:
                     print(f"{Fore.BLUE}[ {Fore.RED}x {Fore.BLUE}]{Fore.RESET} Failed to Fetch Integrity")
@@ -342,7 +343,7 @@ class twitch:
                         self.changeBio(token, userID)
                         self.sendUpload(token, userID)
                         if etoken != False:
-                            code = MailGW().get_messages(etoken)
+                            code = MailGw.get_messages(etoken)
                         self.verify(email, token, userID, code)
                     else:
                         print(f"{Fore.BLUE}[ {Fore.RED}x {Fore.BLUE}]{Fore.RESET} Error")
