@@ -26,7 +26,7 @@ This is a twitch account/token creator
 
 ・ 80 stars for pfp ✅
 
-・ 90 stars for banner
+・ 90 stars for banner [Will add if you bug me enough, don't have much spare time currently.]
 
 ![Screenshot](prev.png)
 
