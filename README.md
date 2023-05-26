@@ -31,8 +31,7 @@ This is a twitch account/token creator
 ![Screenshot](prev.png)
 
 ## Need help?
-・Join my discord
-https://discord.gg/phts
+・Open a issue
 
 
 ## 💭・ChangeLog
