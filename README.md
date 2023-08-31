@@ -50,6 +50,10 @@ v1.02 ⋮ 02/05/2023
 v1.03 ⋮ 02/05/2023
 + Email Verify
 ```
+## Star History
+
+[![Star History Chart](https://api.star-history.com/svg?repos=Hazza3100/Twitch-account-creator&type=Date)](https://star-history.com/#Hazza3100/Twitch-account-creator&Date)
+
 
 ## 📄・License
 
